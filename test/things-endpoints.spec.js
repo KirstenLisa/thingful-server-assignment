@@ -45,7 +45,7 @@ describe('Things Endpoints', function() {
           path: '/api/things/1/reviews'
         },
         ]
-        
+
   protectedEndpoints.forEach(endpoint => {
 
       describe(endpoint.name, () => {
@@ -62,7 +62,7 @@ describe('Things Endpoints', function() {
             .set('Authorization', helpers.makeAuthHeader(userNoCreds))
             .expect(401, { error: `Unauthorized request` })
           })
-        
+
         it(`responds 401 'Unauthorized request' when invalid user`, () => {
             const userInvalidCreds = { user_name: 'user-not', password: 'existy' }
             return supertest(app)
@@ -70,7 +70,7 @@ describe('Things Endpoints', function() {
               .set('Authorization', helpers.makeAuthHeader(userInvalidCreds))
               .expect(401, { error: `Unauthorized request` })
             })
-        
+
         it(`responds 401 'Unauthorized request' when invalid password`, () => {
           const userInvalidPass = { user_name: testUsers[0].user_name, password: 'wrong' }
               return supertest(app)
@@ -79,7 +79,7 @@ describe('Things Endpoints', function() {
                 .expect(401, { error: `Unauthorized request` })
             })
       })
-        
+
         })
   })
 
@@ -146,7 +146,7 @@ describe('Things Endpoints', function() {
   describe(`GET /api/things/:thing_id`, () => {
     context(`Given no things`, () => {
       beforeEach(() =>
-      db.into('thingful_users').insert(testUsers)
+      helpers.seedUsers(db, testUsers)
   )
 
       it(`responds with 404`, () => {
@@ -214,7 +214,7 @@ describe('Things Endpoints', function() {
   describe(`GET /api/things/:thing_id/reviews`, () => {
     context(`Given no things`, () => {
       beforeEach(() =>
-      db.into('thingful_users').insert(testUsers)
+      helpers.seedUsers(db, testUsers)
     )
       it(`responds with 404`, () => {
         const thingId = 123456
